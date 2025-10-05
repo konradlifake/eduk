@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koncert Edukacyjny - 25 czerwca 2026</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: #e6f2e6;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(to right, #2e7d32, #66bb6a);
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateY(-50px) scale(0.95);
+            animation: fadeInDown 1s forwards;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin: 0 0 1rem 0;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.3rem;
+            margin: 0;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        section {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        h2 {
+            color: #2e7d32;
+            border-bottom: 2px solid #66bb6a;
+            padding-bottom: 0.5rem;
+        }
+
+        .accordion {
+            background-color: #a5d6a7;
+            color: #1b5e20;
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+        }
+
+        .accordion:hover {
+            background-color: #81c784;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        .panel {
+            padding: 1rem;
+            background-color: #f1f8e9;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
+            opacity: 0;
+            transform: translateY(-10px);
+            border-radius: 0 0 8px 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .panel p {
+            margin: 0.3rem 0;
+            font-size: 1.1rem;
+        }
+
+        .panel h3 {
+            color: #2e7d32;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .accordion.active + .panel {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .roles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .role {
+            flex: 1 1 200px;
+            background: #c8e6c9;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .role.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .role h3 {
+            margin-top: 0;
+            color: #1b5e20;
+        }
+
+        .name {
+            font-weight: bold;
+            color: #1b5e20;
+        }
+
+        .charity-button {
+            display: inline-block;
+            padding: 0.7rem 1.4rem;
+            background-color: #43a047;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 0.5rem;
+        }
+
+        .charity-button:hover {
+            background-color: #66bb6a;
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: #2e7d32;
+            color: white;
+            margin-top: 2rem;
+            animation: pulseFooter 2s infinite alternate;
+        }
+
+        @keyframes pulseFooter {
+            from { background-color: #2e7d32; }
+            to { background-color: #43a047; }
+        }
+
+        img {
+            height: 400px;
+            width: 500px;
+        }
+
+        /* --- Boczne wysuwane menu --- */
+        #side-tab {
+            position: fixed;
+            left: 0;
+            bottom: 10%; /* 🔽 przeniesione na dół ekranu */
+            background-color: #43a047;
+            color: white;
+            padding: 1rem;
+            border-radius: 0 10px 10px 0;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+        }
+
+        #side-tab:hover {
+            background-color: #66bb6a;
+        }
+
+        #side-panel {
+            position: fixed;
+            top: 0;
+            left: -350px;
+            width: 320px;
+            height: 100%;
+            background-color: #c8e6c9;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.3);
+            padding: 2rem 1rem;
+            transition: left 0.5s ease;
+            z-index: 999;
+            overflow-y: auto;
+        }
+
+        #side-panel.open {
+            left: 0;
+        }
+
+        #side-panel h2 {
+            text-align: center;
+            color: #2e7d32;
+            border-bottom: 2px solid #66bb6a;
+            padding-bottom: 0.5rem;
+        }
+
+        #side-panel ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 1rem 0 0 0;
+        }
+
+        #side-panel li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #a5d6a7;
+            font-size: 1.1rem;
+            color: #1b5e20;
+        }
+
+        #side-panel li strong {
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Koncert Edukacyjny</h1>
+    <p>25 czerwca 2026 - Nie przegap tego wyjątkowego wydarzenia!</p>
+</header>
+
+<section>
+    <button class="accordion">Informacje o wydarzeniu</button>
+    <div class="panel">
+        <h3>Cel koncertu</h3><p>Wsparcie charytatywne</p>
+        <h3>Data</h3><p>25.06.2026, godz. 13:00 - 23:00</p>
+        <h3>Uczestnicy koncertu</h3><p>Koło Gospodyń Wiejskich i zespół szkolny</p>
+        <h3>Adres</h3><p>Browarna 1, Zwierzyniec</p>
+        <h3>Wstęp</h3><p>Dla wszystkich (za darmo)</p>
+        <h3>Dochód</h3><p>Na cel charytatywny dla Leona</p>
+        <a href="https://www.siepomaga.pl/leon-slomka" target="_blank" class="charity-button">Cel charytatywny</a>
+    </div>
+
+    <button class="accordion">Dlaczego warto przyjść?</button>
+    <div class="panel">
+        <h3>Integracja</h3><p>Rodzinna atmosfera.</p>
+        <h3>Pomoc dla Leona</h3><p>Całkowity dochód zostanie przekazany na wsparcie charytatywne.</p>
+        <h3>Muzyka na żywo</h3><p>Koło Gospodyń Wiejskich i zespół szkolny.</p>
+        <h3>Rozrywka</h3><p>Konkursy, prezentacje, edukacja obywatelska.</p>
+    </div>
+
+    <button class="accordion">Mapa i legenda</button>
+    <div class="panel">
+        <img src="nowa_mapa.jpg" alt="Mapa wydarzenia">
+        <img src="legenda.jpg" alt="Legenda mapy">
+    </div>
+
+    <button class="accordion">Koszty</button>
+    <div class="panel">
+        <h3>WC</h3><p>780 zł netto za 3</p>
+        <h3>Scena</h3><p>14 000 zł brutto</p>
+        <h3>Animator</h3><p>1 250 zł</p>
+        <h3>Handlowe</h3><p>5 × 250 zł = ~1 250 zł</p>
+        <h3>Gastronomiczne</h3><p>2 × 600 zł = ~1 200 zł</p>
+        <h3>Stoliki</h3><p>4 000 zł</p>
+        <h3>Dmuchana zjeżdżalnia</h3><p>1 300 zł</p>
+        <h3 style="color:#2e7d32;">RAZEM – ok. 23 000 zł</h3>
+    </div>
+
+    <h2>Nasze Role</h2>
+    <div class="roles">
+        <div class="role">
+            <h3>Koordynator</h3><p><span class="name">Magda Mazurek</span> – organizacja i kontakt z zespołami.</p>
+        </div>
+        <div class="role">
+            <h3>Prezentujący</h3><p><span class="name">Marcel Matejak-Niemczuk</span> – program edukacyjny.</p>
+        </div>
+        <div class="role">
+            <h3>Techniczny</h3><p><span class="name">Konrad Brzeziński</span> – nagłośnienie i światła.</p>
+        </div>
+        <div class="role">
+            <h3>Promocja</h3><p><span class="name">Wadim Akhramienia</span> – social media i relacje online.</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>Do zobaczenia 25 czerwca 2026!</p>
+</footer>
+
+<!-- Boczne wysuwane menu -->
+<div id="side-tab">📅 Plan Koncertu</div>
+
+<div id="side-panel">
+    <h2>Plan Koncertu</h2>
+    <ul>
+        <li><strong>13:00</strong> – Rozpoczęcie</li>
+        <li><strong>od 13:30 do 23:00</strong> – Koło Gospodyń Wiejskich</li>
+        <li><strong>od 15:30 do 16:00</strong> – Zespół szkolny</li>
+        <li><strong>17:00</strong> – Pokaz talentów</li>
+        <li><strong>22:30</strong> – Zamknięcie stoisk</li>
+        <li><strong>23:00</strong> – Zakończenie</li>
+    </ul>
+</div>
+
+<script>
+    const accordions = document.querySelectorAll('.accordion');
+    accordions.forEach(acc => {
+        acc.addEventListener('click', function() {
+            this.classList.toggle('active');
+            const panel = this.nextElementSibling;
+            panel.style.maxHeight = panel.style.maxHeight ? null : panel.scrollHeight + "px";
+        });
+    });
+
+    const roles = document.querySelectorAll('.role');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    roles.forEach(role => observer.observe(role));
+
+    // Boczne menu
+    const sideTab = document.getElementById('side-tab');
+    const sidePanel = document.getElementById('side-panel');
+    sideTab.addEventListener('click', () => {
+        sidePanel.classList.toggle('open');
+    });
+</script>
+
+</body>
+</html>
